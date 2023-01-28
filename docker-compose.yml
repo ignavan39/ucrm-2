@@ -89,11 +89,20 @@ services:
     build:
       context: ./
       dockerfile: docker/app.dockerfile
-    env_file:
-      - .env
     image: app:docker
     ports:
       - 3000:3000
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=user
+      - DATABASE_PASS=pass
+      - DATABASE_NAME=ucrm-db
+      - CORS_CLIENT_URLS=*
+      - JWT_SECRET=super-secret
+      - JWT_SECRET_EXPIRES_IN=600000
+      - ENVIRONMENT=development
+      - PORT=8000
     deploy:
       resources:
         limits:

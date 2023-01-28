@@ -1,34 +1,33 @@
-FROM node:14.17-alpine as dev
+FROM node:18.10.0-alpine as dev
 
 WORKDIR /app/
 
-COPY ./pnpm-lock.yaml ./package.json ./
+COPY ./yarn.lock ./package.json ./
 
-RUN npm i -g pnpm
-RUN pnpm i
+RUN yarn --frozen-lockfile \
+ && yarn cache clean --all --force
 
 COPY . .
 
-FROM node:14.17-alpine as builder
+FROM node:18.10.0-alpine as builder
 
 WORKDIR /app/
 
 COPY --from=dev /app/ /app/
 
-RUN npm i -g pnpm
-RUN pnpm run build
+RUN yarn build
 
 
-FROM node:14.17-alpine
+FROM node:18.10.0-alpine
 
 WORKDIR /app/
 COPY --from=builder /app/package.json ./
-COPY --from=builder /app/pnpm-lock.yaml ./
+COPY --from=builder /app/yarn.lock ./
 
 RUN NODE_ENV=production
 
-RUN npm i -g pnpm
-RUN pnpm i
+RUN yarn --frozen-lockfile \
+ && yarn cache clean --all --force
 
 COPY --from=builder /app/dist ./dist
 CMD [ "node", "dist/main.js" ]
