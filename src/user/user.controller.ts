@@ -1,15 +1,18 @@
-import { Body, Controller, ForbiddenException, NotFoundException, Post } from '@nestjs/common';
-import { AuthService } from './auth/auth.service';
-import { SignInDto, AuthCommonResponse, SignUpDto } from './dto';
+import {Body, Controller, ForbiddenException, NotFoundException, Post} from '@nestjs/common';
+import {AuthService} from './auth/auth.service';
+import {SignInDto, AuthCommonResponse, SignUpDto} from './dto';
 import * as crypto from 'crypto';
 import * as _ from 'lodash';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
+import {User} from './entities/user.entity';
+import {InjectRepository} from '@nestjs/typeorm';
 
 @Controller('user')
 export class UsersController {
-	constructor(private readonly authService: AuthService, @InjectRepository(User) private readonly repository: Repository<User>) { }
+	constructor(
+		private readonly authService: AuthService,
+		@InjectRepository(User) private readonly repository: Repository<User>,
+	) {}
 
 	@Post('/sign-in')
 	async signIn(@Body() body: SignInDto): Promise<AuthCommonResponse> {

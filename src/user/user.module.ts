@@ -1,11 +1,11 @@
 import {Module} from '@nestjs/common';
 import {JwtModule} from '@nestjs/jwt';
 import {PassportModule} from '@nestjs/passport';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import {TypeOrmModule} from '@nestjs/typeorm';
 import {JWTConfigService} from 'src/config/jwt-config.service';
 import {AuthService} from './auth/auth.service';
 import {JwtStrategy} from './auth/jwt.strategy';
-import { User } from './entities/user.entity';
+import {User} from './entities/user.entity';
 import {UsersController} from './user.controller';
 
 //PassportModule.register({ session: true });

@@ -1,13 +1,17 @@
 import {Module} from '@nestjs/common';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
-import {UsersModule} from './users/user.module';
+import {UsersModule} from './user/user.module';
 import {PipelineModule} from './pipeline/pipeline.module';
 import {DashboardModule} from './dashboard/dashboard.module';
 import {ConfigModule, ConfigService} from '@nestjs/config';
 import * as configuration from './config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { join } from 'path';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import {join} from 'path';
+import {StatusModule} from './status/status.module';
+import {LeadModule} from './lead/lead.module';
+import {ContactModule} from './contact/contact.module';
+import {CustomFieldModule} from './custom-field/custom-field.module';
 
 @Module({
 	imports: [
@@ -35,6 +39,10 @@ import { join } from 'path';
 		UsersModule,
 		PipelineModule,
 		DashboardModule,
+		StatusModule,
+		LeadModule,
+		ContactModule,
+		CustomFieldModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

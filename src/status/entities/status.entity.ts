@@ -1,8 +1,8 @@
-import {Dashboard} from 'src/dashboard/entities/dashboard.entity';
+import {Pipeline} from 'src/pipeline/entities/pipeline.entity';
 import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
 
-@Entity('pipeline')
-export class Pipeline {
+@Entity('status')
+export class Status {
 	@PrimaryGeneratedColumn('uuid')
 	id!: string;
 
@@ -12,8 +12,14 @@ export class Pipeline {
 	@UpdateDateColumn()
 	updatedAt: Date;
 
-	@ManyToOne(() => Dashboard, {onDelete: 'CASCADE'})
-	dashboard!: Dashboard;
+	@ManyToOne(() => Pipeline, p => p.id, {onDelete: 'CASCADE'})
+	pipeline: Pipeline;
+
+	@Column('uuid')
+	pipelineId: string;
+
+	@Column('varchar')
+	name: string;
 
 	@Column({type: 'smallint', default: 1})
 	order!: number;

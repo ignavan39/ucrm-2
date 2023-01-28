@@ -1,5 +1,5 @@
-import { Dashboard } from 'src/dashboard/entities/dashboard.entity';
-import { Check, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {Dashboard} from 'src/dashboard/entities/dashboard.entity';
+import {Check, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique} from 'typeorm';
 
 @Unique(['email'])
 @Check('(char_length(password) >= 5)')
@@ -17,9 +17,9 @@ export class User {
 	@Column('varchar')
 	email!: string;
 
-	@Column({ type: 'text', nullable: true })
+	@Column({type: 'text', nullable: true})
 	avatartUrl!: string | null;
 
 	@OneToMany(() => Dashboard, d => d.author)
-	dashboards!: Dashboard[]
+	dashboards!: Dashboard[];
 }

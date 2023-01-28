@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Repository } from 'typeorm';
-import { JwtPayload } from './types';
+import {Injectable} from '@nestjs/common';
+import {ConfigService} from '@nestjs/config';
+import {JwtService} from '@nestjs/jwt';
+import {InjectRepository} from '@nestjs/typeorm';
+import {User} from 'src/user/entities/user.entity';
+import {Repository} from 'typeorm';
+import {JwtPayload} from './types';
 @Injectable()
 export class AuthService {
 	private tokenExpiresIn: number;
@@ -22,7 +22,7 @@ export class AuthService {
 		const expiration = new Date();
 		expiration.setTime(this.tokenExpiresIn * 1000 + expiration.getTime());
 
-		const payload = { id, expiration } as JwtPayload;
+		const payload = {id, expiration} as JwtPayload;
 
 		return this.jwtService.sign(payload);
 	}
@@ -31,6 +31,6 @@ export class AuthService {
 		return this.jwtService.verifyAsync(token);
 	}
 	async validate(payload: JwtPayload): Promise<User> {
-		return this.userRepository.findOne({ where: { id: payload.id } });
+		return this.userRepository.findOne({where: {id: payload.id}});
 	}
 }
