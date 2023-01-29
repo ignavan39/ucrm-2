@@ -1,4 +1,4 @@
-import {BaseEntity} from 'src/common/base.entity';
+import {BaseEntity} from 'src/common/entities/base.entity';
 import {Dashboard} from 'src/dashboard/entities/dashboard.entity';
 import {Column, Entity, ManyToOne} from 'typeorm';
 

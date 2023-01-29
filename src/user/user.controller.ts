@@ -53,6 +53,7 @@ export class UsersController {
 			if ('detail' in e && e.detail.includes('already exists')) {
 				throw new ForbiddenException('user with this email already exist');
 			}
+			throw e;
 		}
 	}
 }

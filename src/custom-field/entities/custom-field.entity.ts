@@ -1,5 +1,5 @@
-import {BaseEntity} from 'src/common/base.entity';
-import {EntityTypeEnum} from 'src/common/entity-type.enum';
+import {BaseEntity} from 'src/common/entities/base.entity';
+import {EntityTypeEnum} from 'src/common/entities/entity-type.enum';
 import {Dashboard} from 'src/dashboard/entities/dashboard.entity';
 import {Column, Entity, ManyToOne, UpdateDateColumn} from 'typeorm';
 

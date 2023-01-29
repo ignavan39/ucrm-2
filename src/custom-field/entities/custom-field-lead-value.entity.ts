@@ -1,4 +1,4 @@
-import {BaseEntity} from 'src/common/base.entity';
+import {BaseEntity} from 'src/common/entities/base.entity';
 import {Lead} from 'src/lead/entities/lead.entity';
 import {Column, Entity, ManyToOne, Unique} from 'typeorm';
 import {CustomField} from './custom-field.entity';

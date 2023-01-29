@@ -1,4 +1,4 @@
-import {BaseEntity} from 'src/common/base.entity';
+import {BaseEntity} from 'src/common/entities/base.entity';
 import {Dashboard} from 'src/dashboard/entities/dashboard.entity';
 import {Lead} from 'src/lead/entities/lead.entity';
 import {Entity, UpdateDateColumn, ManyToOne, Column, Unique} from 'typeorm';

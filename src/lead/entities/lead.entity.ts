@@ -1,4 +1,4 @@
-import {BaseEntity} from 'src/common/base.entity';
+import {BaseEntity} from 'src/common/entities/base.entity';
 import {CustomFieldLeadValue} from 'src/custom-field/entities/custom-field-lead-value.entity';
 import {Status} from 'src/status/entities/status.entity';
 import {Column, Entity, OneToMany, UpdateDateColumn} from 'typeorm';

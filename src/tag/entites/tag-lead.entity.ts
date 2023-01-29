@@ -1,4 +1,4 @@
-import {BaseEntity} from 'src/common/base.entity';
+import {BaseEntity} from 'src/common/entities/base.entity';
 import {Lead} from 'src/lead/entities/lead.entity';
 import {Unique, Entity, ManyToOne} from 'typeorm';
 import {Tag} from './tag.entity';

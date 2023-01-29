@@ -8,8 +8,6 @@ import {JwtStrategy} from './auth/jwt.strategy';
 import {User} from './entities/user.entity';
 import {UsersController} from './user.controller';
 
-//PassportModule.register({ session: true });
-
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([User]),

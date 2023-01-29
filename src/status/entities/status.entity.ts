@@ -1,4 +1,4 @@
-import {BaseEntity} from 'src/common/base.entity';
+import {BaseEntity} from 'src/common/entities/base.entity';
 import {Pipeline} from 'src/pipeline/entities/pipeline.entity';
 import {Column, Entity, ManyToOne, UpdateDateColumn} from 'typeorm';
 

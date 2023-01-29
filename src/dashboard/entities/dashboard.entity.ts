@@ -1,4 +1,4 @@
-import {BaseEntity} from 'src/common/base.entity';
+import {BaseEntity} from 'src/common/entities/base.entity';
 import {Pipeline} from 'src/pipeline/entities/pipeline.entity';
 import {User} from 'src/user/entities/user.entity';
 import {Column, Entity, ManyToOne, OneToMany, Unique, UpdateDateColumn} from 'typeorm';
@@ -14,6 +14,9 @@ export class Dashboard extends BaseEntity {
 
 	@ManyToOne(() => User, {onDelete: 'CASCADE'})
 	creator!: User;
+
+	@Column('uuid')
+	creatorId: string;
 
 	@OneToMany(() => Pipeline, p => p.dashboard)
 	pipelines: Pipeline[];
