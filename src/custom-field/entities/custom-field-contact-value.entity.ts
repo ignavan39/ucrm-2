@@ -4,7 +4,7 @@ import {Unique, Entity, ManyToOne, Column} from 'typeorm';
 import {CustomField} from './custom-field.entity';
 
 @Unique(['contact', 'customField'])
-@Entity('custom_field_contact_lead_value')
+@Entity('custom_field_contact_value')
 export class CustomFieldContactValue extends BaseEntity {
 	@ManyToOne(() => Contact, contact => contact.id, {onDelete: 'CASCADE'})
 	contact: Contact;
