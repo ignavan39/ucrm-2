@@ -1,14 +1,9 @@
+import {BaseEntity} from 'src/common/base.entity';
 import {Pipeline} from 'src/pipeline/entities/pipeline.entity';
-import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {Column, Entity, ManyToOne, UpdateDateColumn} from 'typeorm';
 
 @Entity('status')
-export class Status {
-	@PrimaryGeneratedColumn('uuid')
-	id!: string;
-
-	@CreateDateColumn()
-	createdAt: Date;
-
+export class Status extends BaseEntity {
 	@UpdateDateColumn()
 	updatedAt: Date;
 

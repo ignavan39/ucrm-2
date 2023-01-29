@@ -1,15 +1,11 @@
+import {BaseEntity} from 'src/common/base.entity';
+import {Dashboard} from 'src/dashboard/entities/dashboard.entity';
 import {Lead} from 'src/lead/entities/lead.entity';
-import {Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, Column, Unique} from 'typeorm';
+import {Entity, UpdateDateColumn, ManyToOne, Column, Unique} from 'typeorm';
 
 @Unique(['phone'])
 @Entity('contact')
-export class Contact {
-	@PrimaryGeneratedColumn('uuid')
-	id!: string;
-
-	@CreateDateColumn()
-	createdAt: Date;
-
+export class Contact extends BaseEntity {
 	@UpdateDateColumn()
 	updatedAt: Date;
 
@@ -21,4 +17,10 @@ export class Contact {
 
 	@ManyToOne(() => Lead, lead => lead.id, {nullable: true, onDelete: 'SET NULL'})
 	lead: string | null;
+
+	@ManyToOne(() => Dashboard, dashboard => dashboard.id, {onDelete: 'CASCADE'})
+	dashboard: Dashboard;
+
+	@Column('uuid')
+	dashboardId: string;
 }

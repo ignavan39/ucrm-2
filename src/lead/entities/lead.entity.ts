@@ -1,15 +1,10 @@
+import {BaseEntity} from 'src/common/base.entity';
 import {CustomFieldLeadValue} from 'src/custom-field/entities/custom-field-lead-value.entity';
 import {Status} from 'src/status/entities/status.entity';
-import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {Column, Entity, OneToMany, UpdateDateColumn} from 'typeorm';
 
 @Entity('lead')
-export class Lead {
-	@PrimaryGeneratedColumn('uuid')
-	id!: string;
-
-	@CreateDateColumn()
-	createdAt: Date;
-
+export class Lead extends BaseEntity {
 	@UpdateDateColumn()
 	updatedAt: Date;
 

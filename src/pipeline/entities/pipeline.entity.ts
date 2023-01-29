@@ -1,19 +1,17 @@
+import {BaseEntity} from 'src/common/base.entity';
 import {Dashboard} from 'src/dashboard/entities/dashboard.entity';
-import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {Column, Entity, ManyToOne, UpdateDateColumn} from 'typeorm';
 
 @Entity('pipeline')
-export class Pipeline {
-	@PrimaryGeneratedColumn('uuid')
-	id!: string;
-
-	@CreateDateColumn()
-	createdAt: Date;
-
+export class Pipeline extends BaseEntity {
 	@UpdateDateColumn()
 	updatedAt: Date;
 
 	@ManyToOne(() => Dashboard, {onDelete: 'CASCADE'})
 	dashboard!: Dashboard;
+
+	@Column('uuid')
+	dashboardId: string;
 
 	@Column({type: 'smallint', default: 1})
 	order!: number;

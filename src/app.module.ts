@@ -12,6 +12,9 @@ import {StatusModule} from './status/status.module';
 import {LeadModule} from './lead/lead.module';
 import {ContactModule} from './contact/contact.module';
 import {CustomFieldModule} from './custom-field/custom-field.module';
+import {TaskModule} from './task/task.module';
+import {TagModule} from './tag/tag.module';
+import {SnakeNamingStrategy} from 'typeorm-naming-strategies';
 
 @Module({
 	imports: [
@@ -34,6 +37,7 @@ import {CustomFieldModule} from './custom-field/custom-field.module';
 				entities: [join(__dirname, '../../**', '*.entity.js')],
 				synchronize: true,
 				logging: true,
+				namingStrategy: new SnakeNamingStrategy(),
 			}),
 		}),
 		UsersModule,
@@ -43,6 +47,8 @@ import {CustomFieldModule} from './custom-field/custom-field.module';
 		LeadModule,
 		ContactModule,
 		CustomFieldModule,
+		TaskModule,
+		TagModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

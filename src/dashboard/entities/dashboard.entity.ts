@@ -1,25 +1,11 @@
+import {BaseEntity} from 'src/common/base.entity';
 import {Pipeline} from 'src/pipeline/entities/pipeline.entity';
 import {User} from 'src/user/entities/user.entity';
-import {
-	Column,
-	CreateDateColumn,
-	Entity,
-	ManyToOne,
-	OneToMany,
-	PrimaryGeneratedColumn,
-	Unique,
-	UpdateDateColumn,
-} from 'typeorm';
+import {Column, Entity, ManyToOne, OneToMany, Unique, UpdateDateColumn} from 'typeorm';
 
-@Unique(['author', 'name'])
+@Unique(['creator', 'name'])
 @Entity('dashboard')
-export class Dashboard {
-	@PrimaryGeneratedColumn('uuid')
-	id!: string;
-
-	@CreateDateColumn()
-	createdAt: Date;
-
+export class Dashboard extends BaseEntity {
 	@UpdateDateColumn()
 	updatedAt: Date;
 
@@ -27,7 +13,7 @@ export class Dashboard {
 	name!: string;
 
 	@ManyToOne(() => User, {onDelete: 'CASCADE'})
-	author!: User;
+	creator!: User;
 
 	@OneToMany(() => Pipeline, p => p.dashboard)
 	pipelines: Pipeline[];
