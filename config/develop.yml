@@ -1,8 +1,0 @@
-mail:
-  letters:
-    verification:
-      subject: 'Verification Code'
-      template: 'your verification code {{ code }}, enter it within 5 minutes'
-    recovery-password:
-      subject: 'Password recovery code'
-      template: 'your password recovery code {{ code }}, enter it within 5 minutes'

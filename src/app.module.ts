@@ -15,6 +15,7 @@ import {CustomFieldModule} from './custom-field/custom-field.module';
 import {TaskModule} from './task/task.module';
 import {TagModule} from './tag/tag.module';
 import {SnakeNamingStrategy} from 'typeorm-naming-strategies';
+import {AuthModule} from './auth/auth.module';
 
 @Module({
 	imports: [
@@ -40,6 +41,7 @@ import {SnakeNamingStrategy} from 'typeorm-naming-strategies';
 				namingStrategy: new SnakeNamingStrategy(),
 			}),
 		}),
+		AuthModule,
 		UsersModule,
 		PipelineModule,
 		DashboardModule,

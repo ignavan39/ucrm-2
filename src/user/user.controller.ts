@@ -1,5 +1,5 @@
 import {Body, Controller, ForbiddenException, NotFoundException, Post} from '@nestjs/common';
-import {AuthService} from './auth/auth.service';
+import {AuthService} from '../auth/auth.service';
 import {SignInDto, AuthCommonResponse, SignUpDto} from './dto';
 import * as crypto from 'crypto';
 import * as _ from 'lodash';

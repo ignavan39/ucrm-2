@@ -1,6 +1,7 @@
 import * as Joi from '@hapi/joi';
 
 export const validationSchema = Joi.object({
+	NODE_ENV: Joi.string().valid('development', 'staging', 'production'),
 	ENVIRONMENT: Joi.string().valid('development', 'production', 'staging').required(),
 	PORT: Joi.number().port().required(),
 	CORS_CLIENT_URLS: Joi.string().required(),
@@ -14,6 +15,7 @@ export const validationSchema = Joi.object({
 });
 
 export const configuration = () => ({
+	env: process.env.NODE_ENV,
 	environment: process.env.ENVIRONMENT,
 	port: parseInt(process.env.PORT, 10),
 	corsClientUrls:
