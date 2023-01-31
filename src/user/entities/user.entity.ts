@@ -1,5 +1,6 @@
 import {BaseEntity} from 'src/common/entities/base.entity';
 import {Dashboard} from 'src/dashboard/entities/dashboard.entity';
+import {Permission} from 'src/dashboard/entities/permission.entity';
 import {Check, Column, Entity, OneToMany, Unique} from 'typeorm';
 
 @Unique(['email'])
@@ -20,4 +21,7 @@ export class User extends BaseEntity {
 
 	@OneToMany(() => Dashboard, d => d.creator)
 	dashboards!: Dashboard[];
+
+	@OneToMany(() => Permission, permission => permission.user)
+	permissions: Permission[];
 }
