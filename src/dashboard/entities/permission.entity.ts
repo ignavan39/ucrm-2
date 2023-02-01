@@ -17,15 +17,15 @@ export class Permission extends BaseEntity {
 	@Column('uuid')
 	dashboardId: string;
 
-	@ManyToOne(() => Dashboard, dashboard => dashboard.id)
+	@ManyToOne(() => Dashboard, dashboard => dashboard.id, {onDelete: 'CASCADE'})
 	dashboard: Dashboard;
 
 	@Column('uuid')
 	userId: string;
 
-	@ManyToOne(() => User, user => user.id)
+	@ManyToOne(() => User, user => user.id, {onDelete: 'CASCADE'})
 	user: User;
 
-	@ManyToOne(() => User, user => user.id)
+	@ManyToOne(() => User, user => user.id, {onDelete: 'SET NULL'})
 	issuer: User;
 }

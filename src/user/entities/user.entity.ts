@@ -1,3 +1,4 @@
+import {Exclude} from 'class-transformer';
 import {BaseEntity} from 'src/common/entities/base.entity';
 import {Dashboard} from 'src/dashboard/entities/dashboard.entity';
 import {Permission} from 'src/dashboard/entities/permission.entity';
@@ -10,7 +11,7 @@ export class User extends BaseEntity {
 	@Column('varchar')
 	name!: string;
 
-	@Column('text')
+	@Column({type: 'text', select: false})
 	password!: string;
 
 	@Column('varchar')

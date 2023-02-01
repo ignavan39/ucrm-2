@@ -1,15 +1,4 @@
-import {
-	BadRequestException,
-	Body,
-	Controller,
-	Delete,
-	ForbiddenException,
-	Get,
-	Param,
-	Patch,
-	Post,
-	UseGuards,
-} from '@nestjs/common';
+import {BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {IAM} from 'src/common/decorators';
 import {User} from 'src/user/entities/user.entity';
@@ -19,7 +8,7 @@ import {CreateDashboardDto, UpdateDashboardDto} from './dto/dashboard.dto';
 import {AddPermissionDto} from './dto/permission.dto';
 import {Dashboard} from './entities/dashboard.entity';
 import {Permission, PermissionType} from './entities/permission.entity';
-import {PermissionDashboardGuard} from './guards/dashboard-permission.guard';
+import {DashboardPermissionGuard} from './guards/dashboard-permission.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('dashboard')
@@ -62,7 +51,7 @@ export class DashboardController {
 		}
 	}
 
-	@UseGuards(PermissionDashboardGuard())
+	@UseGuards(DashboardPermissionGuard())
 	@Get('/')
 	async getByUserId(@IAM('id') userId: string) {
 		return this.repository.find({
@@ -72,18 +61,36 @@ export class DashboardController {
 		});
 	}
 
-	@UseGuards(PermissionDashboardGuard())
+	@UseGuards(DashboardPermissionGuard())
 	@Get('/:id')
 	async getById(@Param('id') id: string, @IAM('id') userId: string) {
-		return this.repository.find({
+		const dashboard = await this.repository.findOne({
 			where: {
-				creatorId: userId,
 				id,
 			},
+			relations: ['pipelines', 'permissions', 'permissions.user', 'creator'],
 		});
+
+		return {
+			...dashboard,
+			creator: {
+				email: dashboard.creator.email,
+				avatarUrl: dashboard.creator.avatartUrl,
+				name: dashboard.creator.name,
+			},
+			permissions: dashboard.permissions.map(p => ({
+				type: p.type,
+				user: {
+					id: p.userId,
+					name: p.user.name,
+					email: p.user.email,
+					avatarUrl: p.user.avatartUrl,
+				},
+			})),
+		};
 	}
 
-	@UseGuards(PermissionDashboardGuard(PermissionType.Admin))
+	@UseGuards(DashboardPermissionGuard(PermissionType.Admin))
 	@Patch('/:id')
 	async update(@Param('id') id: string, @IAM('id') userId: string, @Body() body: UpdateDashboardDto) {
 		await this.repository.update(
@@ -97,7 +104,7 @@ export class DashboardController {
 		);
 	}
 
-	@UseGuards(PermissionDashboardGuard(PermissionType.Admin))
+	@UseGuards(DashboardPermissionGuard(PermissionType.Admin))
 	@Delete('/:id')
 	async delete(@Param('id') id: string, @IAM('id') userId: string) {
 		await this.repository.delete({
@@ -106,12 +113,37 @@ export class DashboardController {
 		});
 	}
 
-	@UseGuards(PermissionDashboardGuard(PermissionType.Admin))
+	@UseGuards(DashboardPermissionGuard(PermissionType.Admin))
+	@Delete('/:id/permission/:email')
+	async deletePermission(@Param('id') id: string, @Param('email') email: string) {
+		const user = await this.userRepository.findOne({
+			where: {
+				email,
+			},
+			relations: ['permissions'],
+		});
+
+		if (!user) {
+			throw new BadRequestException('user not found');
+		}
+
+		const currentPermission = user.permissions.find(p => p.dashboardId === id);
+
+		if (!currentPermission) {
+			throw new BadRequestException('permission not found');
+		}
+
+		await this.permissionRepository.delete({
+			id: currentPermission.id,
+		});
+	}
+
+	@UseGuards(DashboardPermissionGuard(PermissionType.Admin))
 	@Post('/:id/permission/add')
 	async addAccess(@Param('id') id: string, @IAM('id') userId: string, @Body() body: AddPermissionDto) {
 		const user = await this.userRepository.findOne({
 			where: {
-				id: userId,
+				email: body.email,
 			},
 			relations: ['permissions'],
 		});

@@ -1,11 +1,13 @@
-import {Body, Controller, ForbiddenException, NotFoundException, Post} from '@nestjs/common';
+import {Body, Controller, ForbiddenException, Get, NotFoundException, Post, UseGuards} from '@nestjs/common';
 import {AuthService} from '../auth/auth.service';
 import {SignInDto, AuthCommonResponse, SignUpDto} from './dto';
 import * as crypto from 'crypto';
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 import {Repository} from 'typeorm';
 import {User} from './entities/user.entity';
 import {InjectRepository} from '@nestjs/typeorm';
+import {IAM} from 'src/common/decorators';
+import {JwtAuthGuard} from './guards/jwt.guard';
 
 @Controller('user')
 export class UsersController {
@@ -28,7 +30,7 @@ export class UsersController {
 		}
 		const token = await this.authService.createJwtToken(user.id);
 		return {
-			user: _.omit(user, ['password']),
+			user,
 			token,
 		};
 	}
@@ -46,7 +48,7 @@ export class UsersController {
 			});
 			const token = await this.authService.createJwtToken(user.id);
 			return {
-				user: _.omit(user, ['password']),
+				user,
 				token,
 			};
 		} catch (e) {
@@ -55,5 +57,15 @@ export class UsersController {
 			}
 			throw e;
 		}
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Get('/getCurrent')
+	async getCurrent(@IAM('id') userId: string) {
+		return this.repository.findOne({
+			where: {
+				id: userId,
+			},
+		});
 	}
 }

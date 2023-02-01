@@ -3,8 +3,8 @@ import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {PermissionType, Permission} from '../entities/permission.entity';
 
-export const PermissionDashboardGuard = (type?: PermissionType) => {
-	class PermissionDashboardGuardMixin implements CanActivate {
+export const DashboardPermissionGuard = (type?: PermissionType) => {
+	class DashboardPermissionGuardMixin implements CanActivate {
 		constructor(@InjectRepository(Permission) readonly repository: Repository<Permission>) {}
 		async canActivate(context: ExecutionContext) {
 			const {user} = context.switchToHttp().getRequest();
@@ -25,6 +25,6 @@ export const PermissionDashboardGuard = (type?: PermissionType) => {
 		}
 	}
 
-	const guard = mixin(PermissionDashboardGuardMixin);
+	const guard = mixin(DashboardPermissionGuardMixin);
 	return guard;
 };

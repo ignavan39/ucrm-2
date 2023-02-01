@@ -1,10 +1,10 @@
-import {IsIn, IsNotEmpty, IsUUID} from 'class-validator';
+import {IsEmail, IsIn, IsNotEmpty} from 'class-validator';
 import {PermissionType} from '../entities/permission.entity';
 
 export class AddPermissionDto {
-	@IsUUID()
+	@IsEmail()
 	@IsNotEmpty()
-	userId: string;
+	email: string;
 
 	@IsNotEmpty()
 	@IsIn([PermissionType.Admin, PermissionType.Manager])
