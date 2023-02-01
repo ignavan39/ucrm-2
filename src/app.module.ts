@@ -16,6 +16,7 @@ import {TaskModule} from './task/task.module';
 import {TagModule} from './tag/tag.module';
 import {SnakeNamingStrategy} from 'typeorm-naming-strategies';
 import {AuthModule} from './auth/auth.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
 	imports: [
@@ -51,6 +52,7 @@ import {AuthModule} from './auth/auth.module';
 		CustomFieldModule,
 		TaskModule,
 		TagModule,
+		MailModule
 	],
 	controllers: [AppController],
 	providers: [AppService],

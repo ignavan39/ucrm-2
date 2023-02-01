@@ -1,4 +1,4 @@
-import {IsEmail, IsEmpty, IsNotEmpty, IsOptional, IsUrl, MinLength} from 'class-validator';
+import {IsEmail, IsEmpty, IsNotEmpty, IsNumber, IsOptional, IsUrl, MinLength} from 'class-validator';
 import {AuthUser} from '../../auth/types';
 
 export class SignInDto {
@@ -26,6 +26,16 @@ export class SignUpDto {
 	@IsOptional()
 	@IsUrl()
 	avatarUrl?: string;
+
+	@IsNotEmpty()
+	@IsNumber()
+	code: number;
+}
+
+export class SendVerifyCodeDto {
+	@IsNotEmpty()
+	@IsEmail()
+	email: string;
 }
 
 export type AuthCommonResponse = AuthUser;

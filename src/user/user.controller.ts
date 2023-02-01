@@ -1,6 +1,6 @@
 import {Body, Controller, ForbiddenException, Get, NotFoundException, Post, UseGuards} from '@nestjs/common';
 import {AuthService} from '../auth/auth.service';
-import {SignInDto, AuthCommonResponse, SignUpDto} from './dto';
+import {SignInDto, AuthCommonResponse, SignUpDto, SendVerifyCodeDto} from './dto';
 import * as crypto from 'crypto';
 // import * as _ from 'lodash';
 import {Repository} from 'typeorm';
@@ -16,7 +16,7 @@ export class UsersController {
 		@InjectRepository(User) private readonly repository: Repository<User>,
 	) {}
 
-	@Post('/sign-in')
+	@Post('/signIn')
 	async signIn(@Body() body: SignInDto): Promise<AuthCommonResponse> {
 		const password = crypto.createHmac('sha256', body.password).digest('hex');
 		const user = await this.repository.findOne({
@@ -35,7 +35,7 @@ export class UsersController {
 		};
 	}
 
-	@Post('/sign-up')
+	@Post('/signUp')
 	async signUp(@Body() body: SignUpDto): Promise<AuthCommonResponse> {
 		const password = crypto.createHmac('sha256', body.password).digest('hex');
 
@@ -57,6 +57,11 @@ export class UsersController {
 			}
 			throw e;
 		}
+	}
+
+	@Post('/sendVerifyCode')
+	async sendVerifyCode(@Body() body: SendVerifyCodeDto) {
+
 	}
 
 	@UseGuards(JwtAuthGuard)
