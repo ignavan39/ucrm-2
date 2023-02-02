@@ -7,14 +7,17 @@ export const DashboardPermissionGuard = (type?: PermissionType) => {
 	class DashboardPermissionGuardMixin implements CanActivate {
 		constructor(@InjectRepository(Permission) readonly repository: Repository<Permission>) {}
 		async canActivate(context: ExecutionContext) {
-			const {user} = context.switchToHttp().getRequest();
+			const request = context.switchToHttp().getRequest();
+			const {user} = request;
 			if (!user) {
 				throw new UnauthorizedException();
 			}
 
+			const dashboardId = request.params.id;
 			const permission = await this.repository.findOne({
 				where: {
 					userId: user.id,
+					dashboardId,
 				},
 			});
 			if (!permission) {

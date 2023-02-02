@@ -16,7 +16,7 @@ export class UsersController {
 		@InjectRepository(User) private readonly repository: Repository<User>,
 	) {}
 
-	@Post('/sign-in')
+	@Post('/signIn')
 	async signIn(@Body() body: SignInDto): Promise<AuthCommonResponse> {
 		const password = crypto.createHmac('sha256', body.password).digest('hex');
 		const user = await this.repository.findOne({
@@ -35,7 +35,7 @@ export class UsersController {
 		};
 	}
 
-	@Post('/sign-up')
+	@Post('/signUp')
 	async signUp(@Body() body: SignUpDto): Promise<AuthCommonResponse> {
 		const password = crypto.createHmac('sha256', body.password).digest('hex');
 

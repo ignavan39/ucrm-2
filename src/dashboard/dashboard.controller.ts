@@ -51,14 +51,12 @@ export class DashboardController {
 		}
 	}
 
-	@UseGuards(DashboardPermissionGuard())
 	@Get('/')
 	async getByUserId(@IAM('id') userId: string) {
-		return this.repository.find({
-			where: {
-				creatorId: userId,
-			},
-		});
+		return this.repository
+			.createQueryBuilder('d')
+			.innerJoin('d.permissions', 'p', 'p.dashboard_id = d.id AND p.user_id =:userId', {userId})
+			.getMany();
 	}
 
 	@UseGuards(DashboardPermissionGuard())
@@ -92,11 +90,10 @@ export class DashboardController {
 
 	@UseGuards(DashboardPermissionGuard(PermissionType.Admin))
 	@Patch('/:id')
-	async update(@Param('id') id: string, @IAM('id') userId: string, @Body() body: UpdateDashboardDto) {
+	async update(@Param('id') id: string, @Body() body: UpdateDashboardDto) {
 		await this.repository.update(
 			{
 				id,
-				creatorId: userId,
 			},
 			{
 				name: body.name,
