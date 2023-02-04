@@ -2,7 +2,7 @@ import {Body, Controller, ForbiddenException, Get, NotFoundException, Post, UseG
 import {AuthService} from '../auth/auth.service';
 import {SignInDto, AuthCommonResponse, SignUpDto} from './dto';
 import * as crypto from 'crypto';
-// import * as _ from 'lodash';
+import * as _ from 'lodash';
 import {Repository} from 'typeorm';
 import {User} from './entities/user.entity';
 import {InjectRepository} from '@nestjs/typeorm';
@@ -48,7 +48,7 @@ export class UsersController {
 			});
 			const token = await this.authService.createJwtToken(user.id);
 			return {
-				user,
+				user: _.omit(user, 'password'),
 				token,
 			};
 		} catch (e) {

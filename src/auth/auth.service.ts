@@ -5,6 +5,7 @@ import {InjectRepository} from '@nestjs/typeorm';
 import {User} from 'src/user/entities/user.entity';
 import {Repository} from 'typeorm';
 import {JwtPayload} from './types';
+import * as dayjs from 'dayjs';
 @Injectable()
 export class AuthService {
 	private tokenExpiresIn: number;
@@ -19,10 +20,9 @@ export class AuthService {
 	}
 
 	async createJwtToken(id: string): Promise<string> {
-		const expiration = new Date();
-		expiration.setTime(this.tokenExpiresIn * 1000 + expiration.getTime());
-
-		const payload = {id, expiration} as JwtPayload;
+		const payload: JwtPayload = {
+			id,
+		};
 
 		return this.jwtService.sign(payload);
 	}

@@ -11,6 +11,7 @@ export class JWTConfigService implements JwtOptionsFactory {
 			secret: this.configService.get<string>('jwt.secret'),
 			signOptions: {
 				expiresIn: this.configService.get<number>('jwt.expiresIn'),
+				issuer: 'ucrm',
 			},
 		};
 	}

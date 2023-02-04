@@ -24,9 +24,7 @@ export class DashboardController {
 		try {
 			const dashboard = await this.repository.save({
 				name: body.name,
-				creator: {
-					id: userId,
-				},
+				creatorId: userId,
 			});
 
 			await this.permissionRepository.insert({

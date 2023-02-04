@@ -7,5 +7,4 @@ export type AuthUser = {
 
 export interface JwtPayload {
 	id: string;
-	expiration: Date;
 }
