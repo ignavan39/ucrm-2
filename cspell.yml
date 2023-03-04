@@ -1,0 +1,7 @@
+language: en
+ignoreRegExpList:
+  - Orm
+words: 
+  - nestjs
+  - ucrm
+  - uncurry

@@ -1,7 +1,7 @@
-import {BaseEntity} from 'src/common/entities/base.entity';
-import {EntityTypeEnum} from 'src/common/entities/entity-type.enum';
-import {Dashboard} from 'src/dashboard/entities/dashboard.entity';
-import {Column, Entity, ManyToOne, UpdateDateColumn} from 'typeorm';
+import { Column, Entity, ManyToOne, UpdateDateColumn } from 'typeorm';
+import { BaseEntity } from '../../common/entities/base.entity';
+import { EntityTypeEnum } from '../../common/entities/entity-type.enum';
+import { Dashboard } from '../../dashboard/entities/dashboard.entity';
 
 export enum CustomFieldTypeEnum {
 	Text = 'text',
@@ -14,13 +14,13 @@ export class CustomField extends BaseEntity {
 	@UpdateDateColumn()
 	updatedAt: Date;
 
-	@Column({type: 'enum', enum: CustomFieldTypeEnum, enumName: 'custom_field_type_enum'})
+	@Column({ type: 'enum', enum: CustomFieldTypeEnum, enumName: 'custom_field_type_enum' })
 	type: CustomFieldTypeEnum;
 
-	@Column({type: 'enum', enum: EntityTypeEnum, enumName: 'custom_field_entity_type_enum'})
+	@Column({ type: 'enum', enum: EntityTypeEnum, enumName: 'custom_field_entity_type_enum' })
 	entityType: EntityTypeEnum;
 
-	@ManyToOne(() => Dashboard, dashboard => dashboard.id, {onDelete: 'CASCADE'})
+	@ManyToOne(() => Dashboard, dashboard => dashboard.id, { onDelete: 'CASCADE' })
 	dashboard: Dashboard;
 
 	@Column('uuid')

@@ -1,5 +1,5 @@
-import {IsEmail, IsEmpty, IsNotEmpty, IsOptional, IsUrl, MinLength} from 'class-validator';
-import {AuthUser} from '../../auth/types';
+import { IsEmail, IsEmpty, IsNotEmpty, IsOptional, IsUrl, MinLength } from 'class-validator';
+import { AuthUser } from '../../auth/types';
 
 export class SignInDto {
 	@IsNotEmpty()

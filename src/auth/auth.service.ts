@@ -1,23 +1,19 @@
-import {Injectable} from '@nestjs/common';
-import {ConfigService} from '@nestjs/config';
-import {JwtService} from '@nestjs/jwt';
-import {InjectRepository} from '@nestjs/typeorm';
-import {User} from 'src/user/entities/user.entity';
-import {Repository} from 'typeorm';
-import {JwtPayload} from './types';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import * as dayjs from 'dayjs';
+import { User } from '../user/entities/user.entity';
+import { JwtPayload } from './types';
 @Injectable()
 export class AuthService {
-	private tokenExpiresIn: number;
-
 	constructor(
 		private readonly jwtService: JwtService,
 		@InjectRepository(User)
 		private readonly userRepository: Repository<User>,
 		readonly configService: ConfigService,
-	) {
-		this.tokenExpiresIn = this.configService.get<number>('jwt.expiresIn');
-	}
+	) {}
 
 	async createJwtToken(id: string): Promise<string> {
 		const payload: JwtPayload = {
@@ -31,6 +27,6 @@ export class AuthService {
 		return this.jwtService.verifyAsync(token);
 	}
 	async validate(payload: JwtPayload): Promise<User> {
-		return this.userRepository.findOne({where: {id: payload.id}});
+		return this.userRepository.findOne({ where: { id: payload.id } });
 	}
 }

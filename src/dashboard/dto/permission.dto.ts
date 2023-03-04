@@ -1,5 +1,5 @@
-import {IsEmail, IsIn, IsNotEmpty} from 'class-validator';
-import {PermissionType} from '../entities/permission.entity';
+import { IsEmail, IsIn, IsNotEmpty } from 'class-validator';
+import { PermissionType } from '../entities/permission.entity';
 
 export class AddPermissionDto {
 	@IsEmail()

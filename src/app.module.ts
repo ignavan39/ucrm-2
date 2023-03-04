@@ -1,21 +1,21 @@
-import {Module} from '@nestjs/common';
-import {AppController} from './app.controller';
-import {AppService} from './app.service';
-import {UsersModule} from './user/user.module';
-import {PipelineModule} from './pipeline/pipeline.module';
-import {DashboardModule} from './dashboard/dashboard.module';
-import {ConfigModule, ConfigService} from '@nestjs/config';
+import { join } from 'node:path';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { UsersModule } from './user/user.module';
+import { PipelineModule } from './pipeline/pipeline.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import * as configuration from './config';
-import {TypeOrmModule} from '@nestjs/typeorm';
-import {join} from 'path';
-import {StatusModule} from './status/status.module';
-import {LeadModule} from './lead/lead.module';
-import {ContactModule} from './contact/contact.module';
-import {CustomFieldModule} from './custom-field/custom-field.module';
-import {TaskModule} from './task/task.module';
-import {TagModule} from './tag/tag.module';
-import {SnakeNamingStrategy} from 'typeorm-naming-strategies';
-import {AuthModule} from './auth/auth.module';
+import { StatusModule } from './status/status.module';
+import { LeadModule } from './lead/lead.module';
+import { ContactModule } from './contact/contact.module';
+import { CustomFieldModule } from './custom-field/custom-field.module';
+import { TaskModule } from './task/task.module';
+import { TagModule } from './tag/tag.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
 	imports: [

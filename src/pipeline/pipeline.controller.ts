@@ -11,16 +11,16 @@ import {
 	BadRequestException,
 	Get,
 } from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Permission, PermissionType} from 'src/dashboard/entities/permission.entity';
-import {DashboardPermissionGuard} from 'src/dashboard/guards/dashboard-permission.guard';
-import {JwtAuthGuard} from 'src/user/guards/jwt.guard';
-import {Repository} from 'typeorm';
-import {CreatePipelineDto} from './dto/create-pipeline.dto';
-import {MovePipelineDto} from './dto/move-pipeline.dto';
-import {UpdatePipelineDto} from './dto/update-pipeline.dto';
-import {Pipeline} from './entities/pipeline.entity';
-import {PipelinePermissionGuard} from './guards/pipeline-permission.guard';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Permission, PermissionType } from '../dashboard/entities/permission.entity';
+import { DashboardPermissionGuard } from '../dashboard/guards/dashboard-permission.guard';
+import { JwtAuthGuard } from '../user/guards/jwt.guard';
+import { CreatePipelineDto } from './dto/create-pipeline.dto';
+import { MovePipelineDto } from './dto/move-pipeline.dto';
+import { UpdatePipelineDto } from './dto/update-pipeline.dto';
+import { Pipeline } from './entities/pipeline.entity';
+import { PipelinePermissionGuard } from './guards/pipeline-permission.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('pipeline')
@@ -35,8 +35,8 @@ export class PipelineController {
 		const permission = await this.permissionRepository
 			.createQueryBuilder('p')
 			.innerJoin('p.dashboard', 'd', 'd.id = p.dashboard_id')
-			.where('d.id =:id', {id: args.dashboardId})
-			.andWhere('p.type =:type', {type: PermissionType.Admin})
+			.where('d.id =:id', { id: args.dashboardId })
+			.andWhere('p.type =:type', { type: PermissionType.Admin })
 			.getOne();
 
 		if (!permission) {

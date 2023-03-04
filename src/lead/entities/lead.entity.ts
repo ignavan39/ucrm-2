@@ -1,7 +1,7 @@
-import {BaseEntity} from 'src/common/entities/base.entity';
-import {CustomFieldLeadValue} from 'src/custom-field/entities/custom-field-lead-value.entity';
-import {Status} from 'src/status/entities/status.entity';
-import {Column, Entity, OneToMany, UpdateDateColumn} from 'typeorm';
+import { Entity, UpdateDateColumn, OneToMany, Column } from 'typeorm';
+import { BaseEntity } from '../../common/entities';
+import { CustomFieldLeadValue } from '../../custom-field/entities/custom-field-lead-value.entity';
+import { Status } from '../../status/entities/status.entity';
 
 @Entity('lead')
 export class Lead extends BaseEntity {
@@ -17,6 +17,6 @@ export class Lead extends BaseEntity {
 	@Column('uuid')
 	statusId: string;
 
-	@OneToMany(() => CustomFieldLeadValue, cflv => cflv.lead)
+	@OneToMany(() => CustomFieldLeadValue, customFields => customFields.lead)
 	customFiledValues: CustomFieldLeadValue[];
 }

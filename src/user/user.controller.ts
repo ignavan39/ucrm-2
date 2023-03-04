@@ -1,13 +1,14 @@
-import {Body, Controller, ForbiddenException, Get, NotFoundException, Post, UseGuards} from '@nestjs/common';
-import {AuthService} from '../auth/auth.service';
-import {SignInDto, AuthCommonResponse, SignUpDto} from './dto';
-import * as crypto from 'crypto';
+import * as crypto from 'node:crypto';
+import { Body, Controller, ForbiddenException, Get, NotFoundException, Post, UseGuards } from '@nestjs/common';
 import * as _ from 'lodash';
-import {Repository} from 'typeorm';
-import {User} from './entities/user.entity';
-import {InjectRepository} from '@nestjs/typeorm';
-import {IAM} from 'src/common/decorators';
-import {JwtAuthGuard} from './guards/jwt.guard';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AuthService } from '../auth/auth.service';
+import { IAM } from '../common/decorators';
+import { isViolatedUniqueConstraintError } from '../common/utils/database-helpers';
+import { SignInDto, AuthCommonResponse, SignUpDto } from './dto';
+import { JwtAuthGuard } from './guards/jwt.guard';
+import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UsersController {
@@ -44,7 +45,7 @@ export class UsersController {
 				password,
 				email: body.email,
 				name: body.name,
-				avatartUrl: body.avatarUrl,
+				avatarUrl: body.avatarUrl,
 			});
 			const token = await this.authService.createJwtToken(user.id);
 			return {
@@ -52,7 +53,7 @@ export class UsersController {
 				token,
 			};
 		} catch (e) {
-			if ('detail' in e && e.detail.includes('already exists')) {
+			if (isViolatedUniqueConstraintError(e)) {
 				throw new ForbiddenException('user with this email already exist');
 			}
 			throw e;

@@ -1,14 +1,14 @@
-import {CanActivate, ExecutionContext, mixin, UnauthorizedException} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
-import {PermissionType, Permission} from '../entities/permission.entity';
+import { CanActivate, ExecutionContext, mixin, UnauthorizedException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PermissionType, Permission } from '../entities/permission.entity';
 
 export const DashboardPermissionGuard = (type?: PermissionType) => {
 	class DashboardPermissionGuardMixin implements CanActivate {
 		constructor(@InjectRepository(Permission) readonly repository: Repository<Permission>) {}
 		async canActivate(context: ExecutionContext) {
 			const request = context.switchToHttp().getRequest();
-			const {user} = request;
+			const { user } = request;
 			if (!user) {
 				throw new UnauthorizedException();
 			}

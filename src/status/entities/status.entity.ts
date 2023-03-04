@@ -1,13 +1,13 @@
-import {BaseEntity} from 'src/common/entities/base.entity';
-import {Pipeline} from 'src/pipeline/entities/pipeline.entity';
-import {Column, Entity, ManyToOne, UpdateDateColumn} from 'typeorm';
+import { Column, Entity, ManyToOne, UpdateDateColumn } from 'typeorm';
+import { BaseEntity } from '../../common/entities/base.entity';
+import { Pipeline } from '../../pipeline/entities/pipeline.entity';
 
 @Entity('status')
 export class Status extends BaseEntity {
 	@UpdateDateColumn()
 	updatedAt: Date;
 
-	@ManyToOne(() => Pipeline, p => p.id, {onDelete: 'CASCADE'})
+	@ManyToOne(() => Pipeline, p => p.id, { onDelete: 'CASCADE' })
 	pipeline: Pipeline;
 
 	@Column('uuid')
@@ -16,6 +16,6 @@ export class Status extends BaseEntity {
 	@Column('varchar')
 	name: string;
 
-	@Column({type: 'smallint', default: 1})
+	@Column({ type: 'smallint', default: 1 })
 	order!: number;
 }
