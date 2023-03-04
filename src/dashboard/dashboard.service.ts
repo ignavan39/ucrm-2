@@ -1,4 +1,4 @@
-import { Injectable, PreconditionFailedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { isViolatedUniqueConstraintError } from '../common/utils/database-helpers';
@@ -20,7 +20,7 @@ export class DashboardService {
 		@InjectRepository(User) private readonly userRepository: Repository<User>,
 	) {}
 
-	async create(name: string, userId: string) {
+	async create(name: string, userId: string): Promise<Dashboard> {
 		try {
 			const dashboard = await this.repository.save({
 				name: name,

@@ -1,59 +1,34 @@
-import * as crypto from 'node:crypto';
 import { Body, Controller, ForbiddenException, Get, NotFoundException, Post, UseGuards } from '@nestjs/common';
 import * as _ from 'lodash';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AuthService } from '../auth/auth.service';
 import { IAM } from '../common/decorators';
-import { isViolatedUniqueConstraintError } from '../common/utils/database-helpers';
 import { SignInDto, AuthCommonResponse, SignUpDto } from './dto';
 import { JwtAuthGuard } from './guards/jwt.guard';
+import { UserService } from './user.service';
+import { UserAlreadyExistException, UserNotFoundException } from './user.exceptions';
 import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UsersController {
-	constructor(
-		private readonly authService: AuthService,
-		@InjectRepository(User) private readonly repository: Repository<User>,
-	) {}
+	constructor(private readonly service: UserService) {}
 
 	@Post('/signIn')
 	async signIn(@Body() body: SignInDto): Promise<AuthCommonResponse> {
-		const password = crypto.createHmac('sha256', body.password).digest('hex');
-		const user = await this.repository.findOne({
-			where: {
-				password: password,
-				email: body.email,
-			},
-		});
-		if (!user) {
-			throw new NotFoundException("user doesn't exist");
+		try {
+			return await this.service.signIn(body);
+		} catch (e) {
+			if (e instanceof UserNotFoundException) {
+				throw new NotFoundException(e.message);
+			}
+			throw e;
 		}
-		const token = await this.authService.createJwtToken(user.id);
-		return {
-			user,
-			token,
-		};
 	}
 
 	@Post('/signUp')
 	async signUp(@Body() body: SignUpDto): Promise<AuthCommonResponse> {
-		const password = crypto.createHmac('sha256', body.password).digest('hex');
-
 		try {
-			const user = await this.repository.save({
-				password,
-				email: body.email,
-				name: body.name,
-				avatarUrl: body.avatarUrl,
-			});
-			const token = await this.authService.createJwtToken(user.id);
-			return {
-				user: _.omit(user, 'password'),
-				token,
-			};
+			return await this.service.signUp(body);
 		} catch (e) {
-			if (isViolatedUniqueConstraintError(e)) {
+			if (e instanceof UserAlreadyExistException) {
 				throw new ForbiddenException('user with this email already exist');
 			}
 			throw e;
@@ -62,11 +37,7 @@ export class UsersController {
 
 	@UseGuards(JwtAuthGuard)
 	@Get('/getCurrent')
-	async getCurrent(@IAM('id') userId: string) {
-		return this.repository.findOne({
-			where: {
-				id: userId,
-			},
-		});
+	async getCurrent(@IAM('id') userId: string): Promise<User> {
+		return this.service.getCurrent(userId);
 	}
 }
