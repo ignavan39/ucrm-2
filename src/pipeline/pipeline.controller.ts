@@ -30,19 +30,9 @@ export class PipelineController {
 		@InjectRepository(Permission) private readonly permissionRepository: Repository<Permission>,
 	) {}
 
+	@UseGuards(DashboardPermissionGuard(PermissionType.Admin))
 	@Post('/create')
 	async create(@Body() args: CreatePipelineDto) {
-		const permission = await this.permissionRepository
-			.createQueryBuilder('p')
-			.innerJoin('p.dashboard', 'd', 'd.id = p.dashboard_id')
-			.where('d.id =:id', { id: args.dashboardId })
-			.andWhere('p.type =:type', { type: PermissionType.Admin })
-			.getOne();
-
-		if (!permission) {
-			throw new ForbiddenException();
-		}
-
 		const pipelines = await this.repository.find({
 			where: {
 				dashboardId: args.dashboardId,

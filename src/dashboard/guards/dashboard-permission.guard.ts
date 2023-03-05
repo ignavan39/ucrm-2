@@ -13,7 +13,10 @@ export const DashboardPermissionGuard = (type?: PermissionType) => {
 				throw new UnauthorizedException();
 			}
 
-			const dashboardId = request.params.id ?? request.params.dashboardId;
+			const dashboardId = request.params.id ?? request.params.dashboardId ?? request.body?.dashboardId;
+			if (!dashboardId) {
+				return false;
+			}
 			const permission = await this.repository.findOne({
 				where: {
 					userId: user.id,
