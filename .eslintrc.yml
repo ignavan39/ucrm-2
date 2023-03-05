@@ -18,7 +18,7 @@ extends:
   - plugin:import/typescript
   - prettier
 rules:
-  prettier/prettier: error
+  prettier/prettier: 0
   no-debugger: error
   no-fallthrough: error
   no-console: warn
