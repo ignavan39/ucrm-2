@@ -6,6 +6,7 @@ import { Pipeline } from './entities/pipeline.entity';
 import { CreatePipelineDto } from './dto/create-pipeline.dto';
 import { UpdatePipelineDto } from './dto/update-pipeline.dto';
 import { MovePipelineDto } from './dto/move-pipeline.dto';
+import { PipelineNotFoundException, UnableToMovePipeline } from './pipeline.exceptions';
 
 @Injectable()
 export class PipelineService {
@@ -24,17 +25,11 @@ export class PipelineService {
 			},
 		});
 		const lastOrder = pipelines.length === 0 ? 0 : pipelines[0].order;
-		try {
-			return await this.pipelineRepository.save({
-				name: dto.name,
-				dashboardId: dto.dashboardId,
-				order: lastOrder + 1,
-			});
-		} catch (e) {
-			if ('detail' in e && e.detail.includes('already exists')) {
-				throw new ForbiddenException('pipeline with this name already exist');
-			}
-		}
+		return await this.pipelineRepository.save({
+			name: dto.name,
+			dashboardId: dto.dashboardId,
+			order: lastOrder + 1,
+		});
 	}
 
 	async update(dto: UpdatePipelineDto, id: string): Promise<void> {
@@ -55,7 +50,7 @@ export class PipelineService {
 			},
 		});
 		if (!pipeline) {
-			throw new ForbiddenException();
+			throw new PipelineNotFoundException("pipeline not found");
 		}
 
 		await this.pipelineRepository.query(
@@ -79,7 +74,7 @@ export class PipelineService {
 			},
 		});
 		if (!pipeline) {
-			throw new ForbiddenException();
+			throw new PipelineNotFoundException("pipeline not found");
 		}
 
 		let oldOrder = 0;
@@ -91,7 +86,7 @@ export class PipelineService {
 				},
 			});
 			if (!leftTemplate) {
-				throw new BadRequestException('pipeline not found');
+				throw new UnableToMovePipeline('unable to move pipeline');
 			}
 
 			oldOrder = leftTemplate.order;
