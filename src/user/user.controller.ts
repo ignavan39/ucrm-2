@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, NotFoundException, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Inject, NotFoundException, Post, UseGuards } from '@nestjs/common';
 import * as _ from 'lodash';
 import { IAM } from '../common/decorators';
 import { SignInDto, AuthCommonResponse, SignUpDto } from './dto';
@@ -9,12 +9,12 @@ import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UsersController {
-	constructor(private readonly service: UserService) {}
+	constructor(@Inject(UserService) private readonly userService: UserService) {}
 
 	@Post('/signIn')
 	async signIn(@Body() body: SignInDto): Promise<AuthCommonResponse> {
 		try {
-			return await this.service.signIn(body);
+			return await this.userService.signIn(body);
 		} catch (e) {
 			if (e instanceof UserNotFoundException) {
 				throw new NotFoundException(e.message);
@@ -26,7 +26,7 @@ export class UsersController {
 	@Post('/signUp')
 	async signUp(@Body() body: SignUpDto): Promise<AuthCommonResponse> {
 		try {
-			return await this.service.signUp(body);
+			return await this.userService.signUp(body);
 		} catch (e) {
 			if (e instanceof UserAlreadyExistException) {
 				throw new ForbiddenException('user with this email already exist');
@@ -38,6 +38,6 @@ export class UsersController {
 	@UseGuards(JwtAuthGuard)
 	@Get('/getCurrent')
 	async getCurrent(@IAM('id') userId: string): Promise<User> {
-		return this.service.getCurrent(userId);
+		return this.userService.getCurrent(userId);
 	}
 }
