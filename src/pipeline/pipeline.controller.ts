@@ -38,7 +38,7 @@ export class PipelineController {
 			return this.pipelineService.create(args);
 		} catch (e) {
 			if (e instanceof PipelineAlreadyExist) {
-				throw new ForbiddenException('pipeline with this name already exist');
+				throw new ForbiddenException(e.message);
 			}
 		}
 	}
